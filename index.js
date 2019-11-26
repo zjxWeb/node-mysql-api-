@@ -27,6 +27,21 @@ app.all('*', function(req, res, next) {
 require('./config/passport')(passport);
 
 
+
+//配置404页面
+app.use(function(req,res,next){
+	res.json({'msg':"页面发生404错误"})
+})
+
+//配置全局错误处理中间件
+
+app.use(function(err,req,res,next){
+	res.status(500).json({
+		err_code:500,
+		message:err.message
+	})
+})
+
 // 指定api路径 all book jsonp
 app.use(router);
 const server = app.listen(8081,  ()=> {
