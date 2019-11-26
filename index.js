@@ -44,8 +44,9 @@ app.use(function(err,req,res,next){
 
 // 指定api路径 all book jsonp
 app.use(router);
-const server = app.listen(8081,  ()=> {
-    const host = server.address().address;
-    const port = server.address().port;
-    console.log("应用实例，访问地址为 http://%s:%s", host, port);
+
+
+const port = process.env.PORT || 3000;
+app.listen(port,() => {
+    console.log(`serve starded on  ${port}`)
 })
