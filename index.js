@@ -15,7 +15,7 @@ app.use(passport.session());
 
 //跨域解决
 app.all('*', function(req, res, next) {
-    console.log(req.method);
+    // console.log(req.method);
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Headers', 'Content-type');
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS,PATCH");
@@ -27,6 +27,8 @@ app.all('*', function(req, res, next) {
 require('./config/passport')(passport);
 
 
+// 指定api路径 all book jsonp
+app.use(router);
 
 //配置404页面
 app.use(function(req,res,next){
@@ -41,11 +43,6 @@ app.use(function(err,req,res,next){
 		message:err.message
 	})
 })
-
-// 指定api路径 all book jsonp
-app.use(router);
-
-
 const port = process.env.PORT || 3000;
 app.listen(port,() => {
     console.log(`serve starded on  ${port}`)
