@@ -51,15 +51,15 @@ exports.register = (req,res) => {
               let sql = 'insert into username set ?';
               db.base(sql,respone,(result)=>{
                 if(result.affectedRows >= 1){
-                    res.json({flag:1});
+                    res.json({flag:1,msg:"注册成功"});
                 }else{
-                    res.json({flag:2});
+                    res.json({flag:2,msg:"注册失败"});
                 }
               })
           }
         })
     }else{
-        res.json({msg:'两次密码不一致'})
+        res.json({flag:2,msg:'两次密码不一致'})
     }
   
 }
@@ -90,7 +90,7 @@ exports.forgit = (req,res)=>{
         "Sphone":req.body.Sphone,
         "Spassword":req.body.Spassword,
         "tpassword":req.body.tpassword ,
-        "code":req.body.code
+        // "code":req.body.code
     }
     if(respone.Spassword == respone.tpassword){
     let sql = `select * from username where Sphone=${respone.Sphone}`;
@@ -110,7 +110,7 @@ exports.forgit = (req,res)=>{
         }
     })
     }else{
-        res.json({msg:'两次密码不一致'})
+        res.json({flag:2,msg:'两次密码不一致'})
     }
 }
 
