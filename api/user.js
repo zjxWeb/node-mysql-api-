@@ -111,7 +111,7 @@ exports.avatar = (req,res)=>{
     // console.log(data)
     db.base(sql,data,(result) => {
         if(result.affectedRows >= 1){
-            let sql = `select * from users where Susername =${info[1]}`
+            let sql = `select * from users`
             db.base(sql,null,(result)=>{
                 // console.log(result[0].avatar)
                 if (result[0].avatar) {
