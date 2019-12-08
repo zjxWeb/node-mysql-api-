@@ -5,6 +5,7 @@ const passport = require("passport");
 const bcrypt = require('bcryptjs');
 const tools = require('../config/tools');
 const  jwt = require('jsonwebtoken');
+const fs = require('fs');
 //短信验证
 let code = ('000000' + Math.floor(Math.random()*999999)).slice(-6);
 exports.infomSent = (req,res) => {
@@ -14,7 +15,7 @@ exports.infomSent = (req,res) => {
         "tpl_value": `#code#=${code}`,  // 您设置的模板变量，根据实际情况修改
         "key":' 1899c0809ae404d49522c786d32e3252',  // 应用APPKEY(应用详细页查询)
     });
-    const queryUrl = 'http://v.juhe.cn/sms/send?'+queryData;
+    const queryUrl = 'http://v.juhe.cn/sms/send?'+queryData;                                                                                                         
 
     request(queryUrl, function (error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -83,6 +84,20 @@ exports.login = (req,res)=>{
         }
     })
 }
+//头像
+exports.avatar = (req,res)=>{
+   let a = req.files.upload.path
+    console.log(req.files.upload.path);
+    const path = './upload'+Date.now() + './png';
+    const dataBuffer = new Buffer(a)
+    fs.writeFile(path,dataBuffer,(err)=>{
+        if(err){
+            console.log(err)
+        }else{
+            console.log('吸入日成功')
+        }
+    })
+    }
 
 //忘记密码,修改密码
 exports.forgit = (req,res)=>{

@@ -5,9 +5,13 @@ const service = require('./api/book');
 const user = require('./api/user');
 const passport = require("passport");
 
+const multipart = require('connect-multiparty'); 
+const multipartMiddleware = multipart();
 
 //短信验证
 router.post('/duanxi_send',user.infomSent);
+//短信验证
+router.post('/avatar',multipartMiddleware,user.avatar);
 
 //注册
 router.post('/register',user.register);
