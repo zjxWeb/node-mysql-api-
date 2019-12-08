@@ -89,7 +89,7 @@ exports.login = (req,res)=>{
 }
 //头像
 exports.avatar = (req,res)=>{
-    const avatar =req.file.originalname
+    // const avatar =req.file.originalname
     // console.log(req.file.path)
     // console.log(avatar)
     // console.log(req.file)
@@ -115,21 +115,20 @@ exports.avatar = (req,res)=>{
             db.base(sql,null,(result)=>{
                 // console.log(result[0].avatar)
                 if (result[0].avatar) {
-                return res.json({
-                    msg:"你的头像已存在"
-                })
+                    // return res.json({
+                    //     msg:"你的头像已存在"
+                    // })
                 }else{
                     return res.status(200).send('上传成功');
                 }
-                
                 })
             
-           return res.json({
+           res.send({
                flag:1,
                data:data
            })
         }else{
-            return res.json({flag:2});
+            return res.send({flag:2});
         }
     })
     }
