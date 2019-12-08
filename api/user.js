@@ -6,6 +6,9 @@ const bcrypt = require('bcryptjs');
 const tools = require('../config/tools');
 const  jwt = require('jsonwebtoken');
 const fs = require('fs');
+const multer  = require('multer');
+var storage = multer.memoryStorage()
+var upload = multer({ storage: storage })
 //短信验证
 let code = ('000000' + Math.floor(Math.random()*999999)).slice(-6);
 exports.infomSent = (req,res) => {
@@ -86,15 +89,47 @@ exports.login = (req,res)=>{
 }
 //头像
 exports.avatar = (req,res)=>{
-   let a = req.files.upload.path
-    console.log(req.files.upload.path);
-    const path = './upload'+Date.now() + './png';
-    const dataBuffer = new Buffer(a)
-    fs.writeFile(path,dataBuffer,(err)=>{
-        if(err){
-            console.log(err)
+    const avatar =req.file.originalname
+    // console.log(req.file.path)
+    // console.log(avatar)
+    // console.log(req.file)
+    req.body.upload.unshift(req.file.path)
+    const info = req.body.upload;
+    // console.log(info)
+    let sql = `insert into users set ? `
+    const data = {
+        "avatar":info[0],
+        "Susername":info[1],
+        "Ssex":info[2],
+        "Sage":info[3],
+        "Smajor":info[4],
+        "Sschool":info[5],
+        "Sqq":info[6],
+        "Saddress":info[7],
+        "Smotto":info[8],
+    }
+    // console.log(data)
+    db.base(sql,data,(result) => {
+        if(result.affectedRows >= 1){
+            let sql = `select * from users where Susername =${info[1]}`
+            db.base(sql,null,(result)=>{
+                // console.log(result[0].avatar)
+                if (result[0].avatar) {
+                return res.json({
+                    msg:"你的头像已存在"
+                })
+                }else{
+                    return res.status(200).send('上传成功');
+                }
+                
+                })
+            
+           return res.json({
+               flag:1,
+               data:data
+           })
         }else{
-            console.log('吸入日成功')
+            return res.json({flag:2});
         }
     })
     }
